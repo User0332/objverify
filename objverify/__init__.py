@@ -1,4 +1,5 @@
 import inspect # for more function validation later
+import copy
 from typing import Union
 
 AnyNumber = Union[int, float]
@@ -9,6 +10,11 @@ class Object:
 		for key, value in proto.items():
 			if type(value) is dict:
 				value = Object(value)
+
+			if type(value) is list:
+				value = copy.deepcopy(value)
+				for i, val in enumerate(value):
+					if type(val) is dict: value[i] = Object(val)
 
 			self.__dict__[key] = value
 
@@ -65,7 +71,6 @@ class Type:
 						
 					else: return False
 
-
 				if (value.max_len is not None) and not (value.min_len <= len(val) <= value.max_len): return False
 				if len(val) < value.min_len: return False
 
@@ -103,6 +108,27 @@ class Type:
 
 				continue
 
+			if type(value) is Type:
+				if not value.verify_vars(val): return False
+				continue
+
+			if type(value) is list:
+				if type(val) is not list: return False
+
+				if not Type(
+					{
+						str(i): item for i, item in enumerate(value)
+					}
+				).verify_vars(
+					Object(
+						{
+							str(i): item for i, item in enumerate(val)
+						}
+					)
+				): return False
+
+				continue
+
 			if type(val) is not value: return False
 
 		return True
@@ -135,6 +161,10 @@ class Type:
 					)
 				): return False
 
+				continue
+
+			if type(value) is Type:
+				if not value.verify_classattrs(val): return False
 				continue
 
 			if type(val) is not value: return False
