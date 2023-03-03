@@ -173,12 +173,6 @@ class Type:
 
 	def verify(self, obj: object):
 		return self.verify_vars(obj) and self.verify_classattrs(obj)
-
-def verify_vars(obj: object, proto: dict):
-	return Type(proto).verify_vars(obj)
-
-def verify_classattrs(obj: object, proto: dict):
-	return Type(proto).verify_classattrs(obj)
-
-def verify(obj: object, proto: dict, class_proto: dict):
+	
+def verify(obj: object, proto: dict=None, class_proto: dict=None):
 	return Type(proto, class_proto).verify(obj)
