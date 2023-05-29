@@ -1,3 +1,7 @@
+"""Super useful library for Python object validation"""
+
+__version__ = "1.0.0"
+
 import inspect # for more function validation later
 import copy
 from typing import Union
@@ -28,9 +32,10 @@ class Int(Number): pass
 class Float(Number): pass
 
 class LenableIterable:
-	def __init__(self, *, max_len: int=None, min_len: int=0):
+	def __init__(self, *, max_len: int=None, min_len: int=0, elem_type: type=None):
 		self.max_len = max_len
 		self.min_len = min_len
+		self.element_type = elem_type
 
 class String(LenableIterable):
 	def __init__(self, *, max_len: int=None, min_len: int=0, containsany: tuple[str]=None):
@@ -79,6 +84,10 @@ class Type:
 			if type(value) is LenableIterable:
 				if (value.max_len is not None) and not (value.min_len <= len(val) <= value.max_len): return False
 				if len(val) < value.min_len: return False
+
+				if value.element_type is not None:
+					for elem in val:
+						if not Type({ "elem": value.element_type }).verify_vars(Object({ "elem": elem })): return False
 
 				continue
 
