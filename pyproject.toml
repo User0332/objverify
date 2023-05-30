@@ -7,7 +7,15 @@ name = "objverify"
 authors = [{name = "Carl Furtado", email = "carlzfurtado@gmail.com"}]
 readme = "README.md"
 license = {file = "LICENSE"}
-classifiers = ["License :: OSI Approved :: MIT License"]
+classifiers = [
+	"License :: OSI Approved :: MIT License",
+	"Programming Language :: Python",
+	"Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Typing :: Typed"
+]
+keywords = ["object", "validation", "complex", "schema", "typechecking"]
 dynamic = ["version", "description"]
 
 [project.urls]
