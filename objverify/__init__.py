@@ -1,6 +1,6 @@
 """Super useful library for Python object validation"""
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 import inspect # for more function validation later
 import copy
